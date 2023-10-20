@@ -1,17 +1,17 @@
 "use client"
 import React from 'react'
 import Nav from '../components/nav'
-import Topics from '../components/topics'
+import Questions from '../../components/question'
 
-const interview = () => {
+const Questions = () => {
   return (
     <main>
     <div className="flex">
       <Nav active='interview' /> 
-      <main className="flex-1 p-4"><Topics/></main>
+      <main className="flex-1 p-4"><Questions/></main>
     </div>
   </main>
   )
 }
 
-export default interview
+export default Questions

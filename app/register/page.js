@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+
 const Register = () => {
   const { handleSubmit } = useForm();
   const videoRef = useRef();
