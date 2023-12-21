@@ -1,56 +1,61 @@
 "use client" 
-import Link from 'next/link'
-import { useState } from 'react';
+import Image from 'next/image'
+import logo from './imgs/gpt.png'
+import { useState } from 'react'
+import { CiLogout } from "react-icons/ci";
+
 
 const SideMenu = ({ active }) => { // Receive the `active` prop as an argument
   const [activeLink, setActiveLink] = useState(active); // Set the default active link
-
+const logout=()=>{
+  localStorage.removeItem("registrationno");
+  window.location.href="/"
+}
  
 
   return (
-    <div className="lg:w-80 bg-black min-h-screen flex flex-col justify-start text-white">
-      <div className="m-2 p-5 text-blue-600 font-extrabold">InterviewGPT</div>
-      <div>
-        <ul>
-          <li
-            className={`px-20 py-4 ${
-              activeLink === 'home' ? 'bg-blue-600' : 'hover:bg-blue-700'
-            } mx-auto font-extrabold`}
-          >
-            <Link href="/" passHref>
-              <div>HOME</div>
-            </Link>
-          </li>
-          <li
-            className={`px-20 py-4 ${
-              activeLink === 'profile' ? 'bg-blue-600' : 'hover:bg-blue-700'
-            } font-extrabold`}
-          >
-            <Link href="/profile" passHref>
-              <div >PROFILE</div>
-            </Link>
-          </li>
-          <li
-            className={`px-20 py-4 ${
-              activeLink === 'interview' ? 'bg-blue-600' : 'hover:bg-blue-700'
-            } font-extrabold`}
-          >
-            <Link href="/interview" passHref>
-              <div >INTERVIEW</div>
-            </Link>
-          </li>
-          <li
-            className={`px-20 py-4 ${
-              activeLink === 'about' ? 'bg-blue-600' : 'hover:bg-blue-700'
-            } font-extrabold`}
-          >
-            <Link href="/about" passHref>
-              <div >ABOUT US</div>
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </div>
+    
+    <div className='w-[100%] '> 
+        <div className='flex justify-between w-[100%] '>
+        <div className="p-2  text-center flex w-auto my-auto">
+          <div className='w-[40%] my-auto p-1 m-2' >
+            <Image
+              src={logo}
+              width={60}
+              height={60}
+              alt="logo"
+            />
+
+          </div>
+          <h1 className='text-4xl py-4 font-bold text-white'>InterviewGPT</h1>
+        </div>
+        <div className='w-[40%]  flex text-white my-auto'>
+          <div className={`m-4 text-xl font-bold ${
+              activeLink === 'home' ? 'bg-black rounded-lg p-1' : ' p-1 rounded-lg hover:bg-black'
+            }`}  ><a href='/home'>Home</a></div>
+            <div className={`m-4 text-xl font-bold ${
+              activeLink === 'Profile' ? 'bg-black rounded-lg p-1' : ' p-1 rounded-lg hover:bg-black'
+            }`}  ><a href='/profile'>Profile</a></div>
+          <div className={`m-4 text-xl font-bold ${
+              activeLink === 'topics' ?'bg-black rounded-lg p-1' : ' p-1 rounded-lg hover:bg-black'
+            }`} ><a href='/topics'>Topics</a></div>
+          <div className={`m-4 text-xl font-bold ${
+              activeLink === 'interview' ? 'bg-black rounded-lg p-1' : ' p-1 rounded-lg hover:bg-black'
+            }`}><a href='/instructions'>Interview</a></div>
+          <div className={`m-4 text-xl font-bold ${
+              activeLink === 'contact' ?'bg-black rounded-lg p-1' : ' p-1 rounded-lg hover:bg-black'
+            }`}><a href='/contact'>Contact Us</a></div>
+
+
+        </div>
+        <div className='text-xl text-white p-10 font-bold flex mx-10' onClick={logout}><div className='w-[30px] p-1 m-auto'><CiLogout/></div>Logout</div>
+        
+        </div>
+       
+   
+         
+
+        </div>
   );
 };
 

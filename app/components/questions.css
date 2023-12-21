@@ -1,0 +1,15 @@
+
+.bg{
+    background-color: rgb(57, 123, 189);
+    background-image: url("./imgs/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100%;
+
+ 
+    z-index: -1;
+    background-repeat: repeat-y;
+
+
+}

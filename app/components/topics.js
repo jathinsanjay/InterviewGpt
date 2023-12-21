@@ -1,76 +1,81 @@
-"use client"
 import React, { useState } from 'react';
-import QuestionList from '../components/question'
-import Loader from 'react-loader-spinner';
+import QuestionList from '../components/question';
+import ReactLoading from "react-loading";
+import toast, { Toaster } from 'react-hot-toast';
 
 const topics = [
-  { name: 'Data Structures and Algorithms', color: 'bg-blue-500' },
-  { name: 'Computer Architecture', color: 'bg-green-500' },
-  { name: 'Computer Networks', color: 'bg-yellow-500' },
-  { name: 'Operating Systems', color: 'bg-red-500' },
-  {name:'C language',color:'bg-purple-500'}
+  { name: 'Data Structures and Algorithms', color: 'bg-gradient-to-r from-cyan-500 to-blue-500' },
+  { name: 'Computer Architecture', color: 'bg-gradient-to-r from-yellow-500 to-red-500' },
+  { name: 'Computer Networks', color: 'bg-gradient-to-r from-green-400 to-blue-500' },
+  { name: 'Operating Systems', color: 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500' },
+  { name: 'C language', color: 'bg-gradient-to-r from-purple-500 to-blue-500 ' },
 ];
 
 const TopicPage = () => {
-    const [questions,setquestions]=useState([])
-    const[notselected,setnotselected]=useState(true)
-    const[selected,setselected]=useState(false)
-    const [loading, setLoading] = useState(false); 
 
-    const getQuestions = async (topic) => {
-      setLoading(true); 
+  const [selectedTopic, setSelectedTopic] = useState(null); // Track selected topic
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: `Interview questions on ${topic.name}`,
-      }),
-    };
-    try {
-      const response = await fetch(`http://localhost:8000/questions/${topic.name}`, options);
-      if (response.ok) {
-        const data = await response.json();
-        // console.log(data);
-       const questions= data.choices[0].message
-       console.log(questions.content)
-       
-       const data2 = questions.content.split(/Q:\s/).filter(ques => ques.trim() !== '');
-       
-       console.log(data2);
-       setquestions(data2)
-       setnotselected(false)
-       setselected(true)
-       console.log(questions)
-       
-       
-
-      } else {
-        console.error('Failed to fetch questions.');
-      }
-    } catch (error) {
-      console.error('Error while fetching questions:', error);
-    }
+  // Function to handle topic selection and change the selectedTopic state
+  const handleTopicSelection = (selectedTopic) => {
+   
+    setSelectedTopic(selectedTopic);
   };
 
   return (
-    <div className="flex flex-col flex-wrap items-center justify-center">
-     {notselected&& <h1 className="text-2xl font-bold mb-4">Choose Interview Topics</h1>}
-     {selected&& <h1 className="text-2xl font-bold mb-4"> Answer the following questions</h1>}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-     {notselected&&topics.map((topic, index) => (
-          <div
-            key={index}
-            className={`p-20 font-extrabold rounded-lg text-white ${topic.color} hover:${topic.color} transition duration-300 cursor-pointer`}
-            onClick={() => getQuestions(topic)}
-          >
-            {topic.name}
-          </div>
-        ))}
+    <div className="flex flex-col flex-wrap items-center justify-center ">
+      <div>
+        <Toaster />
       </div>
-      {selected&&<QuestionList questions={questions} />}
+      
+        <h1 className="text-3xl font-bold mb-4 text-black font-extrabold font-cursive
+        ">Choose Interview Topic</h1>
+      
+  
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {
+          topics.map((topic, index) => (
+            <div
+              key={index}
+              className={`p-20 text-2xl font-black   m-2 font-extrabold rounded-[20px]  shadow-xl border-white border-2 shadow-black
+              ${selectedTopic === topic.name ? 'bg-black text-white' : 'bg-gradient-to-b from-50% from-white to-transparent text-[#380869]'} 
+              cursor-pointer transition duration-300 hover:animate-pulse`}
+              onClick={() => handleTopicSelection(topic.name)}
+            >
+              {topic.name}
+            </div>
+          ))}
+      </div>
+      {/* {notSelected && (
+        <div className="text-2xl font-bold mt-5"> Select Difficulty Level:</div>
+      )}
+      {notSelected && (
+        <div className="flex p-10 margin-5">
+          <div
+            className={`p-5 mx-6 font-extrabold rounded-lg text-white bg-black hover:white ${level === "easy" ? 'bg-green-600' : 'bg-black'}  transition duration-300 cursor-pointer`}
+            onClick={() => setLevel('easy')}
+            
+          >
+            Easy
+          </div>
+          <div
+           className={`p-5 mx-6 font-extrabold rounded-lg text-white bg-black hover:white ${level === "medium" ? 'bg-green-600' : 'bg-black'}  transition duration-300 cursor-pointer`}
+            onClick={() => setLevel('medium')}
+          >
+            Medium
+          </div>
+          <div
+             className={`p-5 mx-6 font-extrabold rounded-lg text-white bg-black hover:white ${level === "hard" ? 'bg-green-600' : 'bg-black'}  transition duration-300 cursor-pointer`}
+            onClick={() => setLevel('hard')}
+          >
+            Hard
+          </div>
+        </div>
+      )} */}
+        <div className="text-2xl font-bold mt-2 bg-black text-white rounded-lg p-2 cursor-pointer" >
+          <a href={`/interview/questions/${selectedTopic}`}>Next</a>
+          
+        </div>
+     
     </div>
   );
 };

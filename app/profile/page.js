@@ -1,12 +1,13 @@
 "use client"
 import Nav from '../components/nav'
+import Profile from '../components/profile'
 
 const page = () => {
   return (
     <main>
-    <div className="flex">
+    <div className="flex flex-col">
       <Nav active='profile' /> 
-      <main className="flex-1 p-4">Profile</main>
+     <Profile/>
     </div>
   </main>
   )

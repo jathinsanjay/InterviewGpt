@@ -6,7 +6,7 @@ import loading from './loading';
 
 const Layout = ({ children }) => {
     return (
-      <html>
+      <html >
       <body>
       <Suspense fallback={<p>Loading feed...</p>}>{children} </Suspense></body>
     </html>

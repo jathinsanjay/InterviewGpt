@@ -1,14 +1,37 @@
 "use client"
-import React from 'react'
-import Nav from '../components/nav'
+import React, { useState } from 'react'
+import SideNavBar from '../components/nav';
 import Topics from '../components/topics'
+import Interview from '../components/instructions'
+import toast, { Toaster } from 'react-hot-toast';
 
+
+
+  
 const interview = () => {
+  const [ready,setready]=useState(false)
+  const startInterview = () => {
+
+    toast((t) => (
+      <span >
+       <b className='text-black '>Select the topic for your interview and Level</b>
+        
+      </span>
+    ));
+  setready(true)}
+
   return (
-    <main>
-    <div className="flex">
-      <Nav active='interview' /> 
-      <main className="flex-1 p-4"><Topics/></main>
+    <main className="bg-gradient-to-br  from-10% from-black  via-30% via-[#6C71F09B] via-30% via-blue-500  via to-pink-500 w-[100%] h-[100vh]">
+    <Toaster />
+    <div className="flex flex-col">
+      <SideNavBar active='interview' />
+      <main className='w-[100%] flex'>
+        <Topics/>
+        </main>
+      
+    
+     
+        
     </div>
   </main>
   )

@@ -9,13 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^10.16.4",
+    "hot": "^0.0.7",
     "next": "13.5.4",
-    "react": "^18",
+    "react": "^18.2.0",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
     "react-loader-spinner": "^5.4.5",
-    "react-webcam": "^7.1.1"
+    "react-loading": "^2.0.3",
+    "react-spinners": "^0.13.8",
+    "react-webcam": "^7.1.1",
+    "toast": "^0.5.4"
   },
   "devDependencies": {
     "autoprefixer": "^10",

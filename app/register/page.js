@@ -1,6 +1,13 @@
 "use client"
 import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
+import toast, { Toaster } from 'react-hot-toast';
+import Image from 'next/image';
+import logo from '../components/imgs/gpt.png';
+import './register.css'
+import { set } from "react-hook-form";
+
+
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +18,7 @@ const RegistrationForm = () => {
     password: "", // Add the "Password" field
     // Add other registration fields as needed
   });
-
+const [capture,setcapture]=useState(false)
   const [capturedImage, setCapturedImage] = useState(null);
   const [base64, setBase64] = useState(null);
 
@@ -34,8 +41,10 @@ const RegistrationForm = () => {
     height: 720,
     facingMode: "user",
   };
-
+ 
   const handleCapture = () => {
+    setcapture(true)
+    if(capture==true){
     const imageSrc = webcamRef.current.getScreenshot();
 
     setCapturedImage(imageSrc);
@@ -51,30 +60,49 @@ const RegistrationForm = () => {
     setIsRegistered(true);
 
     const registrationData = {
-      "firstName": formData.firstName,
-      "lastName": formData.lastName,
-      "registrationNumber": formData.registrationNumber,
-      "email": formData.email,
+   
+      "registration": formData.registrationNumber,
       "password": formData.password, // Include the password
       "image": base64
     };
     console.log(registrationData)
+    setregisterno(registrationData.registration)
+    
+      
+    localStorage.setItem("registrationno",registrationData.registration)
 
-    // Send registration data to the API as a POST request
-    fetch("https://wyntcwjdt0.execute-api.ap-south-1.amazonaws.com/dev/registration", {
+    
+    fetch("https://zoisb8kgbe.execute-api.ap-south-1.amazonaws.com/dev/student-auth", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+       
       },
       body: JSON.stringify(registrationData),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("Registration response:", data);
+        console.log(data.message)
+        if(data.message==="Login successful."){
+          
+          fetch(`https://wcvhwrunn9.execute-api.ap-south-1.amazonaws.com/dev/student-profile-retrieval?registrationNumber=${registrationData.registration}`)
+
+          .then((response) => response.json())
+         
+          window.location.href = "/home";
+         
+         
+          
+        }
+        else {
+          toast.error(data.message||"Reload the page")
+        }
 
 
        
       });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -82,148 +110,133 @@ const RegistrationForm = () => {
     handleRegistration();
   };
 
-  return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-blue-200 to-blue-100 backdrop-blur-md">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-98 animate-fade-in transform transition-transform duration-500">
-        <h1 className="text-3xl font-semibold text-center mb-4 text-blue-500">
-          Registration Form
-        </h1>
-        {isRegistered ? (
-          <div>
-            <h2 className="text-2xl mb-2 text-blue-500">Profile Information</h2>
-            <p>
-              <strong>First Name:</strong> {formData.firstName}
-            </p>
-            <p>
-              <strong>Last Name:</strong> {formData.lastName}
-            </p>
-            <p>
-              <strong>Email:</strong> {formData.email}
-            </p>
-            <p>
-              <strong>Registration Number:</strong> {formData.registrationNumber}
-            </p>
-            <div className="w-80 h-72 relative flex justify-center items-center">
-              {capturedImage && (
-                <img
-                  src={capturedImage}
-                  alt="Captured Image"
-                  className="rounded-lg max-h-52 w-full"
-                />
-              )}
-            </div>
+return (
+  <main className="main" >
+  <div> 
+  <div>
+    <div><Toaster/></div>
+      <div>
+        <div className="p-9 w-full text-center flex mx-auto justify-center">
+          <div className=''>
+            <Image
+              src={logo}
+              width={90}
+              height={90}
+              alt="logo"
+            />
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="firstName" className="text-gray-600">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                id="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="First Name"
-              />
-            </div>
-            <div>
-              <label htmlFor="lastName" className="text-gray-600">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                id="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="Last Name"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="text-gray-600">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="alexsus@example.com"
-              />
-            </div>
-            <div>
-              <label htmlFor="registrationNumber" className="text-gray-600">
-                Registration Number
-              </label>
-              <input
-                type="text"
-                name="registrationNumber"
-                id="registrationNumber"
-                value={formData.registrationNumber}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="RA0000000000000"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="text-gray-600">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="Password"
-              />
-            </div>
-            <div className="w-80 h-72 relative flex justify-center items-center">
-              <Webcam
+          <h1 className='text-5xl py-4 font-bold text-white'>InterviewGPT</h1>
+        </div>
+      </div>
+<div className='flex justify-around w-full p-4'>
+      <div className='flex flex-col w-[50%]'>
+        <div className="div1">
+          <h1 className='text-5xl font-bold text-white py-2 m-2'>Create New Account</h1>
+        </div>
+
+        <div className="text-white py-2 m-2 inline">
+          already a user ?<a className='text-[#3E43BD] font-bold p-1'>Login</a>
+        </div>
+
+        <div className="w-[100%] flex justify-around">
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
+            className="form-input w-[48%] bg-brown-600 text-black rounded-[15px] p-3 "
+            placeholder="First Name"
+          />
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+            className="form-input w-[48%] bg-brown-600 text-black rounded-[15px] p-3 "
+            placeholder="Last Name"
+          />
+        </div>
+
+        <div className="w-[100%] p-4">
+          <input
+            type="text"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="form-input w-[100%] bg-brown-600 text-black rounded-[15px] p-3 "
+            placeholder="email"
+          />
+        </div>
+
+        <div className="w-[100%] flex pb-2">
+          <input
+            type="text"
+            name="registrationNumber"
+            id="registrationNumber"
+            value={formData.registrationNumber}
+            onChange={handleInputChange}
+            className="form-input w-[50%]  text-black rounded-[15px] p-3 m-2 "
+            placeholder="Employee ID"
+          />
+          <select className='w-[50%] rounded-[15px] p-2 h-[50px] m-auto'>
+            <option value="Select Department">Select Department</option>
+            <option value="Cintel">Cintel</option>
+            <option value="DSBS">DSBS</option>
+            <option value="NWC">NWC</option>
+          </select>
+        </div>
+
+        <div className="w-[100%] ">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleInputChange}
+
+
+            className="form-input w-[80%]  text-black rounded-[15px] p-3 m-2"
+            placeholder="Password"
+          />
+        </div>
+
+        <div className="w-[100%] flex text-white justify-around m-8">
+          {!isCaptured&&<button className='bg-[#2E4AAF] p-4 w-[50%] rounded-[12px]   animate-bounce' onClick={handleCapture}>Capture Image</button>}
+          {isCaptured&&
+            <button  className={`w-[45%] rounded-[12px] p-4 ${isCaptured ? 'bg-[#2E4AAF]' : 'bg-gray-500'}  animate-bounce`} onClick={handleSubmit} >Register</button>}
+        </div>
+      </div>{
+      <div className='bg-transparent w-[50%] '>
+  {capture && (
+      <Webcam
                 ref={webcamRef}
                 videoConstraints={videoConstraints}
                 screenshotFormat="image/jpeg"
-                className={`w-full h-full ${
-                  capturedImage ? "hidden" : "block"
-                }`}
-              />
+                className={`w-full h-full ${capturedImage ? "hidden" : "block"}`}
+              />)}
               {capturedImage && (
                 <img
                   src={capturedImage}
                   alt="Captured Image"
-                  className="rounded-lg max-h-52 w-full absolute inset-0"
+                  
                 />
-              )}
-            </div>
-            {isCaptured && (
-              <button
-                type="submit"
-                className="bg-blue-500 text-white rounded py-2 px-4 hover:bg-blue-600 w-full transform transition-transform duration-300 hover:scale-105"
-              >
-                Register
-              </button>
-            )}
-            {!isCaptured && (
-              <button
-                type="button"
-                onClick={handleCapture}
-                className="bg-blue-500 text-white rounded py-2 px-4 hover:bg-blue-600 w-full transform transition-transform duration-300 hover:scale-105"
-              >
-                Capture Image
-              </button>
-            )}
-          </form>
-        )}
+                )}
+              
+      </div>}
       </div>
     </div>
-  );
+     
+
+    </div>
+
+</main>
+  
+)
 };
+
+
 
 export default RegistrationForm;

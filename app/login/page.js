@@ -5,12 +5,9 @@ import Webcam from "react-webcam";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+   
     registrationNumber: "",
-    password: "", // Add the "Password" field
-    // Add other registration fields as needed
+    password: "",
   });
 
   const [capturedImage, setCapturedImage] = useState(null);
@@ -60,10 +57,11 @@ const RegistrationForm = () => {
     console.log(registrationData)
 
     
-    fetch("https://8xuhff2sbb.execute-api.ap-south-1.amazonaws.com/dev/student-auth", {
+    fetch("https://zoisb8kgbe.execute-api.ap-south-1.amazonaws.com/dev/student-auth", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+       
       },
       body: JSON.stringify(registrationData),
     })
