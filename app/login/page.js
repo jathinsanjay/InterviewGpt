@@ -1,4 +1,5 @@
 "use client"
+
 import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 
@@ -51,17 +52,15 @@ const RegistrationForm = () => {
     setIsRegistered(true);
 
     const registrationData = {
-      "firstName": formData.firstName,
-      "lastName": formData.lastName,
-      "registrationNumber": formData.registrationNumber,
-      "email": formData.email,
+   
+      "registration": formData.registrationNumber,
       "password": formData.password, // Include the password
       "image": base64
     };
     console.log(registrationData)
 
-    // Send registration data to the API as a POST request
-    fetch("https://wyntcwjdt0.execute-api.ap-south-1.amazonaws.com/dev/registration", {
+    
+    fetch("https://8xuhff2sbb.execute-api.ap-south-1.amazonaws.com/dev/student-auth", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -91,15 +90,7 @@ const RegistrationForm = () => {
         {isRegistered ? (
           <div>
             <h2 className="text-2xl mb-2 text-blue-500">Profile Information</h2>
-            <p>
-              <strong>First Name:</strong> {formData.firstName}
-            </p>
-            <p>
-              <strong>Last Name:</strong> {formData.lastName}
-            </p>
-            <p>
-              <strong>Email:</strong> {formData.email}
-            </p>
+        
             <p>
               <strong>Registration Number:</strong> {formData.registrationNumber}
             </p>
@@ -116,48 +107,7 @@ const RegistrationForm = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="firstName" className="text-gray-600">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                id="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="First Name"
-              />
-            </div>
-            <div>
-              <label htmlFor="lastName" className="text-gray-600">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                id="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="Last Name"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="text-gray-600">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="form-input w-full bg-gray-100"
-                placeholder="alexsus@example.com"
-              />
-            </div>
-            <div>
+            
               <label htmlFor="registrationNumber" className="text-gray-600">
                 Registration Number
               </label>

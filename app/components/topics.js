@@ -37,7 +37,7 @@ const TopicPage = () => {
        const questions= data.choices[0].message
        console.log(questions.content)
        
-       const data2 = questions.content.split(/\d+\.\s/).filter(ques => ques.trim() !== '');
+       const data2 = questions.content.split(/Q:\s/).filter(ques => ques.trim() !== '');
        
        console.log(data2);
        setquestions(data2)
